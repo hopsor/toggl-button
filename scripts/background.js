@@ -16,7 +16,7 @@ var TogglButton = {
 
   fetchUser: function () {
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", TogglButton.$apiUrl + "/v7/me.json", true);
+    xhr.open("GET", TogglButton.$apiUrl + "/v7/me.json?with_related_data=true", true);
     xhr.onload = function () {
       if (xhr.status === 200) {
         var resp = JSON.parse(xhr.responseText);
@@ -29,15 +29,22 @@ var TogglButton = {
   createTimeEntry: function (timeEntry) {
     var start = new Date(),
       xhr = new XMLHttpRequest(),
-      entry = {
-        time_entry: {
+      timeEntry = {
           start: start.toISOString(),
           created_with: "Toggl Button",
           description: timeEntry.description,
-          wid: TogglButton.$user.default_wid,
           duration: -(start.getTime() / 1000)
-        }
-      };
+        },
+      entry = {};
+
+    if (TogglButton.$user.default_pid == 'default' || TogglButton.$user.default_pid == undefined){
+      timeEntry.wid = TogglButton.$user.default_wid;
+    }else{
+      timeEntry.pid = TogglButton.$user.default_pid;
+    }
+
+    entry.time_entry = timeEntry;
+
     xhr.open("POST", TogglButton.$apiUrl + "/v8/time_entries", true);
     xhr.setRequestHeader('Authorization', 'Basic ' + btoa(TogglButton.$user.api_token + ':api_token'));
     xhr.send(JSON.stringify(entry));
@@ -51,6 +58,10 @@ var TogglButton = {
       sendResponse({success: TogglButton.$user !== null});
     } else if (request.type === 'timeEntry') {
       TogglButton.createTimeEntry(request);
+    } else if (request.type === 'getOptions'){
+      sendResponse({workspaces: TogglButton.$user.workspaces, projects: TogglButton.$user.projects});
+    } else if (request.type === 'setProjectId'){
+      TogglButton.$user.default_pid = request.pid;
     }
   }
 

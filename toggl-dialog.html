@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+  </head>
+
+  <body id="toggl_frame">
+    <div id="toggl_dialog" class="toggl-dialog">
+      <div class="header">
+        <h1>
+          <img src="images/icon-19.png" />
+          toggl
+        </h1>
+      </div>
+
+      <div class="body">
+        <div>
+          <label for="toggl_project">Project</label> 
+          <select id="toggl_project"></select>
+        </div>
+
+        <div>
+          <label for="toggl_task_description">Task description</label>
+          <textarea id="toggl_task_description"></textarea>
+        </div>
+
+        <div>
+          <button type="button" id="toggl_submit">Submit</button>
+          <button type="button" id="toggl_cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+    
+    <script type="text/javascript" src="scripts/frame.js"></script>
+
+  </body>
+</html>

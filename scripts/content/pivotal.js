@@ -25,11 +25,7 @@
 
       link = createLink('toggl-button pivotal');
       link.addEventListener("click", function (e) {
-        chrome.extension.sendMessage({
-          type: 'timeEntry',
-          description: $("textarea", elem).value
-        });
-        showNotice('Toggl timer started');
+        showEntryDialog($("textarea", elem).value);
       });
       cont.appendChild(link);
     }
@@ -37,6 +33,8 @@
 
   chrome.extension.sendMessage({type: 'activate'}, function (response) {
     if (response.success) {
+      // Load dialog
+      createEntryDialog(response.user);
       document.addEventListener('DOMNodeInserted', addButtonListener);
     }
   });

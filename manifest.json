@@ -52,5 +52,8 @@
       "matches": ["*://app.asana.com/*"],
       "js": ["scripts/content/asana.js"]
     }
+  ],
+  "web_accessible_resources": [
+    "toggl-dialog.html"
   ]
 }
